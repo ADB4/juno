@@ -1,9 +1,21 @@
+name: juno
+
 services:
   postgres:
-    image: 'postgres:latest'
+    image: 'postgres:18'
     environment:
-      - 'POSTGRES_DB=mydatabase'
-      - 'POSTGRES_PASSWORD=secret'
-      - 'POSTGRES_USER=myuser'
+      POSTGRES_DB: juno
+      POSTGRES_USER: juno
+      POSTGRES_PASSWORD: juno
     ports:
-      - '5432'
+      - '5432:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U juno -d juno']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  pgdata:
