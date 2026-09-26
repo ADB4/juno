@@ -1,0 +1,26 @@
+package com.adb4.juno.auth;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.UUID;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+public record AppUserPrincipal(UUID id, String email) implements UserDetails {
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public String getPassword() {
+        return null; // passwordless: no endpoint accepts a password
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+    }
+}
